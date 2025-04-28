@@ -8,6 +8,27 @@ def add_contact(args, contacts):
     contacts[name] = phone
     return "Contact added."
 
+def change_contact(args, contacts):
+    if len(args) != 2:
+        return "Usage: change username phone"
+    name, phone = args
+    if name in contacts:
+        contacts[name] = phone
+        return "Contact updated."
+    else:
+        return "Contact not found."
+
+def get_phone(args, contacts):
+    if len(args) != 1:
+        return "Usage: phone username"
+    name = args[0]
+    return contacts.get(name, "Contact not found.")
+
+def show_all(contacts):
+    if not contacts:
+        return "No contacts saved."
+    return "\n".join(f"{name}: {phone}" for name, phone in contacts.items())
+
 def main():
     contacts = {}
     print("Welcome to the assistant bot!")
@@ -23,20 +44,12 @@ def main():
         elif command == "add":
             print(add_contact(args, contacts))
         elif command == "change":
-            if len(args) != 2:
-                print("Usage: change [name] [new phone]")
-            elif args[0] in contacts:
-                contacts[args[0]] = args[1]
-                print("Contact updated.")
-            else:
-                print("Contact not found.")
+            print(change_contact(args, contacts))
+        elif command == "phone":
+            print(get_phone(args, contacts))
         elif command == "all":
-            if not contacts:
-                print("No contacts saved.")
-            else:
-                print("Saved contacts:")
+            print(show_all(contacts))
         else:
             print("Invalid command.")
-
 if __name__ == "__main__":
     main()
